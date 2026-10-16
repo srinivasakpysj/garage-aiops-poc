@@ -1,0 +1,15 @@
+[Unit]
+Description=Garage AIOps FastAPI
+After=network.target postgresql.service
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/garage-aiops-poc/backend
+EnvironmentFile=/root/garage-aiops-poc/backend/.env
+ExecStart=/root/garage-aiops-poc/backend/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+[Install]
+WantedBy=multi-user.target

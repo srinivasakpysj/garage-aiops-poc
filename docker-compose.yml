@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16
+    container_name: garage-aiops-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-garage_aiops}
+      POSTGRES_USER: ${POSTGRES_USER:-garage_aiops}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-local_only_change_me}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - garage_aiops_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-garage_aiops} -d ${POSTGRES_DB:-garage_aiops}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+volumes:
+  garage_aiops_pgdata:
